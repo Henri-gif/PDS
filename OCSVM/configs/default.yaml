@@ -1,0 +1,45 @@
+data:
+  csv_path: "data/synthetic_vessel_tracks_with_anomalies_20251007.csv"
+  time_col: t
+  mmsi_col: AgentID
+  lat_col: y
+  lon_col: x
+  sog_col: speed
+  cog_col: null
+  heading_col: null
+  label_col: is_anomaly
+  dropna_cols:
+  - lat
+  - lon
+  - sog
+  min_track_length: 5
+  max_speed_kn: 200
+  max_turn_deg_per_s: 100
+  max_gap_s: 3600
+  resample_rule: null
+features:
+  use_columns:
+  - sog
+  - dist_m
+  - accel
+  - dcog_abs
+  - turn_rate
+  - speed_std_60s
+  - turn_rate_std_60s
+  - dev_from_line_m
+  - stop_flag
+train:
+  save_dir: models
+  save_name: detector.pkl
+eval:
+  plots_dir: outputs
+  score_quantile_threshold: 0.95
+model:
+  kernel: rbf
+  gamma: scale
+  nu: 0.12
+model_iforest:
+  contamination: 0.12
+  n_estimators: 200
+  max_samples: auto
+  random_state: 42
